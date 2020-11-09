@@ -26,22 +26,25 @@ namespace OrderTool.Classes
         private int Port { get; set; }
 
 
-
         #endregion
 
         #region Constructor 
-        clsMailReader(string pMailServer, string pUserLogin, string pUserPassword, int pPort) 
+        public clsMailReader(string pMailServer, string pUserLogin, string pUserPassword, int pPort) 
         {
             this.MailServer = pMailServer;
             this.UserLogin = pUserLogin;
             this.UserPassword = pUserPassword;
             this.Port = pPort;
+
+            // DO HERE
+            Client.Connect(this.MailServer, port);
+            Client.Login(login, password);
         }
         #endregion
 
         #region Public Methods
 
-        public void GetAmazonOrders() 
+        public List<clsOrder> GetAmazonOrders() 
         {
             // Get the Order Mail via IMAP
 
@@ -50,7 +53,8 @@ namespace OrderTool.Classes
                 // Remove this token because I dont have it.
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                // Login
+
+                // Authenticate
                 client.Authenticate(this.UserLogin, this.UserPassword);
 
                 // Get Inbox
@@ -83,12 +87,14 @@ namespace OrderTool.Classes
                     //
                     //) ;
 
-                    orders.Add(order);
+                    //orders.Add(order);
                 }
                 
 
                 // Disconnect client
                 client.Disconnect(true);
+
+                return null;
             }
 
         }
